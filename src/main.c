@@ -1,9 +1,10 @@
 #include <MKL25Z4.h>
 #include <stdbool.h>
 
-#include "std_funcs.h"
-#include "rgb.h"
-#include "dac.h"
+#include "../inc/std_funcs.h"
+#include "../inc/rgb.h"
+#include "../inc/dac.h"
+#include "../inc/cmp.h"
 
 static void CMP0_IRQHandler(void)
 {
@@ -26,9 +27,9 @@ int main(void) {
 	SystemCoreClockUpdate();
 	rgb_init(true);
 	dac_init();
-	comparator_init();
+	cmp_init();
 	
-	generate_triangle();
+	dac_generate_triangle();
 	
 	return 0;
 }

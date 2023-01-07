@@ -1,6 +1,6 @@
 #include <MKL25Z4.h>
-#include "rgb.h"
-#include "std_funcs.h"
+#include "../inc/rgb.h"
+#include "../inc/std_funcs.h"
 
 #ifdef FAST_ACCESS
 static void _red_on(void) {

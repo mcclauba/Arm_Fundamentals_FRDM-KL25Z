@@ -1,6 +1,6 @@
 #include <MKL25Z4.h>
-#include "switch.h"
-#include "std_funcs.h"
+#include "../inc/switch.h"
+#include "../inc/std_funcs.h"
 
 void switch_init(void) {
 	/* Enable clock on PORTD */

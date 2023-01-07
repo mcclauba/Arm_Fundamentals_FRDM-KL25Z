@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include "std_funcs.h"
+#include "../inc/std_funcs.h"
 
 #define RED_SHIFT (18) /* PORTB */
 #define GREEN_SHIFT (19) /* PORTB */
