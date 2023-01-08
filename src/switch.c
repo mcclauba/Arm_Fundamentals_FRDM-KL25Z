@@ -2,6 +2,9 @@
 #include "../inc/switch.h"
 #include "../inc/std_funcs.h"
 
+#define IRQ_SW_EITHER_EDGE 11
+#define SW_PRIORITY	2
+
 void switch_init(void) {
 	/* Enable clock on PORTD */
 	SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
@@ -15,6 +18,18 @@ void switch_init(void) {
 	/* Inputs */
 	PTD->PDDR &= ~MASK(SW1_SHIFT);
 	PTD->PDDR &= ~MASK(SW2_SHIFT);
+}
+
+void porte29_digital_in(void) {
+	/* Enable clock on PORTE */
+	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
+	
+	/* GPIO module */
+	PORTE->PCR[29] &= ~PORT_PCR_MUX_MASK;
+	PORTE->PCR[29] |= PORT_PCR_MUX(1);
+	
+	/* Inputs */
+	PTD->PDDR &= ~MASK(29);
 }
 
 void switch_irq_init(void) {
