@@ -13,3 +13,6 @@
 #define DELAY_4_S	4 * 1000U * 1000U
 
 void delay(volatile unsigned int time_delay);
+
+void porte29_digital_in(void);
+void porte29_analog_in(void);

@@ -1,8 +1,28 @@
 #include <MKL25Z4.h>
+#include <stdbool.h>
+
 #include "../inc/cmp.h"
+#include "../inc/rgb.h"
 #include "../inc/std_funcs.h"
 
-void cmp_init(void)
+#define CMP_COUT (CMP0->SCR & CMP_SCR_COUT_MASK)
+
+void CMP0_IRQHandler(void)
+{
+	if (CMP_COUT) { 
+		/* Rising edge, green light */
+		rgb_led_off(RED);
+		rgb_led_on(GREEN);
+		CMP0->SCR |= CMP_SCR_CFR_MASK;
+	} else if (!CMP_COUT) {
+		/* Falling edge, red light */
+		rgb_led_on(RED);
+		rgb_led_off(GREEN);
+		CMP0->SCR |= CMP_SCR_CFF_MASK;
+	}
+}
+
+void cmp_init(bool irq)
 {	
 	/* Enable clock to comparator and enable continuous mode */
 	SIM->SCGC4 |= SIM_SCGC4_CMP_MASK;
@@ -20,10 +40,23 @@ void cmp_init(void)
 	 */
 	CMP0->DACCR = CMP_DACCR_DACEN_MASK | CMP_DACCR_VOSEL(36);
 	
-	/* Enable interrupt on both rising and falling edges */
-	CMP0->SCR = CMP_SCR_IEF_MASK | CMP_SCR_IER_MASK;
+	if (irq) {
+		/* Enable interrupt on both rising and falling edges */
+		CMP0->SCR = CMP_SCR_IEF_MASK | CMP_SCR_IER_MASK;
 
-	NVIC_SetPriority(CMP0_IRQn, 128);
-	NVIC_ClearPendingIRQ(CMP0_IRQn);
-	NVIC_EnableIRQ(CMP0_IRQn);
+		NVIC_SetPriority(CMP0_IRQn, 2);
+		NVIC_ClearPendingIRQ(CMP0_IRQn);
+		NVIC_EnableIRQ(CMP0_IRQn);
+	}
+}
+
+void cmp_out_task(void)
+{
+	if (CMP_COUT) {
+		rgb_led_off(RED);
+		rgb_led_on(GREEN);
+	} else {
+		rgb_led_on(RED);
+		rgb_led_off(GREEN);
+	}
 }

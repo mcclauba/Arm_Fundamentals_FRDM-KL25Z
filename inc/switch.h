@@ -8,4 +8,3 @@
 
 void switch_init(void);
 void switch_irq_init(void);
-void porte29_digital_in(void);

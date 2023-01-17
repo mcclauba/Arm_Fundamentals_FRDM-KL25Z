@@ -20,18 +20,6 @@ void switch_init(void) {
 	PTD->PDDR &= ~MASK(SW2_SHIFT);
 }
 
-void porte29_digital_in(void) {
-	/* Enable clock on PORTE */
-	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
-	
-	/* GPIO module */
-	PORTE->PCR[29] &= ~PORT_PCR_MUX_MASK;
-	PORTE->PCR[29] |= PORT_PCR_MUX(1);
-	
-	/* Inputs */
-	PTD->PDDR &= ~MASK(29);
-}
-
 void switch_irq_init(void) {
 	PORTD->PCR[SW1_SHIFT] = 
 		PORT_PCR_MUX(1) | /* GPIO */
