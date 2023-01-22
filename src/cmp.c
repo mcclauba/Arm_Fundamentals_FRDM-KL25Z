@@ -7,26 +7,18 @@
 
 #define CMP_COUT (CMP0->SCR & CMP_SCR_COUT_MASK)
 
-void CMP0_IRQHandler(void)
-{
-	if (CMP_COUT) { 
-		/* Rising edge, green light */
-		rgb_led_off(RED);
-		rgb_led_on(GREEN);
-		CMP0->SCR |= CMP_SCR_CFR_MASK;
-	} else if (!CMP_COUT) {
-		/* Falling edge, red light */
-		rgb_led_on(RED);
-		rgb_led_off(GREEN);
-		CMP0->SCR |= CMP_SCR_CFF_MASK;
-	}
-}
+void CMP0_IRQHandler(void);
 
 void cmp_init(bool irq)
 {	
 	/* Enable clock to comparator and enable continuous mode */
 	SIM->SCGC4 |= SIM_SCGC4_CMP_MASK;
 	CMP0->CR1 = CMP_CR1_EN_MASK;
+
+	/* Enable clock on PORTE, configure pin 29 to analog */
+	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
+	PORTE->PCR[29] &= ~PORT_PCR_MUX_MASK;
+	PORTE->PCR[29] |= PORT_PCR_MUX(0);
 
 	/* Select input channels,
 	 * Plus: channel 5 on Port E bit 29
@@ -47,6 +39,21 @@ void cmp_init(bool irq)
 		NVIC_SetPriority(CMP0_IRQn, 2);
 		NVIC_ClearPendingIRQ(CMP0_IRQn);
 		NVIC_EnableIRQ(CMP0_IRQn);
+	}
+}
+
+void CMP0_IRQHandler(void)
+{
+	if (CMP_COUT) { 
+		/* Rising edge, green light */
+		rgb_led_off(RED);
+		rgb_led_on(GREEN);
+		CMP0->SCR |= CMP_SCR_CFR_MASK;
+	} else if (!CMP_COUT) {
+		/* Falling edge, red light */
+		rgb_led_on(RED);
+		rgb_led_off(GREEN);
+		CMP0->SCR |= CMP_SCR_CFF_MASK;
 	}
 }
 

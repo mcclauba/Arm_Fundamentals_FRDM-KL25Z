@@ -20,10 +20,8 @@ void porte29_digital_in(void) {
 }
 
 void porte29_analog_in(void) {
-	/* Enable clock on PORTE */
+	/* Enable clock on PORTE, configure pin 29 to analog */
 	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
-	
-	/* Analog in */
 	PORTE->PCR[29] &= ~PORT_PCR_MUX_MASK;
 	PORTE->PCR[29] |= PORT_PCR_MUX(0);
 }
