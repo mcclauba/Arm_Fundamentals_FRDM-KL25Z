@@ -49,7 +49,7 @@ void adc_init(void)
 	SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK;
 	SIM->SCGC5 |= SIM_SCGC5_PORTE_MASK;
 
-	/* Select analog for pine 20 on port e */
+	/* Select analog for pin 20 on Port E */
 	PORTE->PCR[ADC_IN] &= ~PORT_PCR_MUX_MASK;
 	PORTE->PCR[ADC_IN] |= PORT_PCR_MUX(0);
 

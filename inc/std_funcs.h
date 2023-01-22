@@ -15,4 +15,7 @@
 void delay(volatile unsigned int time_delay);
 
 void porte29_digital_in(void);
+
 void porte29_analog_in(void);
+
+void flash_reset_cause(void);

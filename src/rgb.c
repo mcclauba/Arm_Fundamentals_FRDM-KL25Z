@@ -99,6 +99,9 @@ void rgb_init(bool display) {
 	PTD->PDDR |= MASK(BLUE_SHIFT);
 #endif
 
+	_red_off();
+	_green_off();
+	_blue_off();
 	if (display) {
 		_red_on();
 		_green_off();

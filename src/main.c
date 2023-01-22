@@ -10,10 +10,13 @@
 int main(void) {
 	SystemCoreClockUpdate();
 
-	rgb_init(true); /* Show lights on start-up */
+	rgb_init(true);
 	// cmp_init(true); /* Enable IRQ */
-	dac_init();
-	systick_init();
+	// dac_init();
+	// systick_init();
+	COP_WDT_init();
+	flash_reset_cause();
+	COP_WDT_service_fail();
 
 	while(1);
 }
